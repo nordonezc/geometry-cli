@@ -7,8 +7,8 @@ import picocli.CommandLine;
 public class GlobalExceptionHandler implements CommandLine.IExecutionExceptionHandler {
 
     @Override
-    public int handleExecutionException(Exception e, CommandLine commandLine, CommandLine.ParseResult parseResult) throws Exception {
-        if (e instanceof NoCoordinatesException) {
+    public int handleExecutionException(Exception e, CommandLine commandLine, CommandLine.ParseResult parseResult) {
+        if (e instanceof NoCoordinatesException || e instanceof InvalidScenarioException) {
             log.error(e.getMessage());
         } else {
             log.error("Unexpected exception");
