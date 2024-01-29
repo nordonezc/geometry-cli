@@ -33,9 +33,9 @@ public abstract class RectangleHandlerTest {
         Optional.ofNullable(input).ifPresent(i -> {
             var rectangles = readStringInput(input.split(","));
             comparator = new RectangleComparator(rectangles[0], rectangles[1]);
+            assertThrows(InvalidScenarioException.class,
+                    () -> rectangleHandler.handleRequest(comparator));
         });
-        assertThrows(InvalidScenarioException.class,
-                () -> rectangleHandler.handleRequest(comparator));
     }
 
     private static Rectangle[] readStringInput(String[] rectangles) {

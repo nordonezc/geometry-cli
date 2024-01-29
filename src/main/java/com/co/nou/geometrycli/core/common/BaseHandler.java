@@ -12,10 +12,6 @@ public abstract class BaseHandler<T> implements Handler<T> {
 
     }
 
-    protected BaseHandler(Handler<T> nextHandler) {
-        this.nextHandler = nextHandler;
-    }
-
     @Override
     public void handleRequest(T request) throws InvalidScenarioException {
         if (canHandle(request)) {

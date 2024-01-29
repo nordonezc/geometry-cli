@@ -5,6 +5,8 @@ import com.co.nou.geometrycli.model.common.Line;
 import com.co.nou.geometrycli.model.common.Point;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -22,8 +24,13 @@ public class RectangleComparator extends IFigureComparator<Rectangle> {
             this.a = one;
             this.b = two;
         } else {
-            this.a = two;
-            this.b = one;
+            if (one.getX1y1().y() < two.getX1y1().y()) {
+                this.a = one;
+                this.b = two;
+            } else {
+                this.a = two;
+                this.b = one;
+            }
         }
         this.c = intersectedRectangle();
     }
@@ -40,14 +47,13 @@ public class RectangleComparator extends IFigureComparator<Rectangle> {
     public void addLineInCommon(Point p1, Point p2) {
         if (!p1.equals(p2)) {
             Line sharedLine = new Line(p1, p2);
-            this.sharedSides.add(sharedLine);
+            this.getSharedSides().add(sharedLine);
         }
         addIntersectionPoints(p1, p2);
     }
 
-    public void addIntersectionPoints(Point p1, Point p2) {
-        this.intersectionPoints.add(p1);
-        this.intersectionPoints.add(p2);
+    public void addIntersectionPoints(Point... p1) {
+        this.getIntersectionPoints().addAll(Arrays.asList(p1));
     }
 
 }

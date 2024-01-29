@@ -16,9 +16,9 @@ import java.util.Set;
 public abstract class IFigureComparator<F extends IFigure> {
 
     F a, b;
-    final Set<Point> intersectionPoints;
-    Boolean isContained;
-    final List<Line> sharedSides;
+    private final Set<Point> intersectionPoints;
+    private Boolean isContained;
+    private final List<Line> sharedSides;
 
     protected IFigureComparator(F a, F b) {
         this.a = a;

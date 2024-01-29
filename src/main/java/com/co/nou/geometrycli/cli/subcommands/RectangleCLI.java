@@ -1,13 +1,10 @@
 package com.co.nou.geometrycli.cli.subcommands;
 
-import com.co.nou.geometrycli.core.rectangle.AdjacentRectangleHandler;
-import com.co.nou.geometrycli.core.rectangle.ContainedRectangleHandler;
-import com.co.nou.geometrycli.core.rectangle.IntersectedRectangleHandler;
-import com.co.nou.geometrycli.core.rectangle.NoCollisionRectangleHandler;
-import com.co.nou.geometrycli.core.rectangle.SameRectangleHandler;
+import com.co.nou.geometrycli.core.FigureComparatorHandler;
 import com.co.nou.geometrycli.exception.NoCoordinatesException;
 import com.co.nou.geometrycli.model.Rectangle;
 import com.co.nou.geometrycli.model.comparator.RectangleComparator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
@@ -20,6 +17,7 @@ import java.util.concurrent.Callable;
 @CommandLine.Command(
         name = "rectangle",
         description = "Rectangle Comparator")
+@RequiredArgsConstructor
 public class RectangleCLI implements Callable<Integer> {
 
     @CommandLine.Option(
@@ -36,20 +34,16 @@ public class RectangleCLI implements Callable<Integer> {
             arity = "4")
     private ArrayList<Double> r2;
 
+    final FigureComparatorHandler<Rectangle, RectangleComparator> comparator;
 
     @Override
     public Integer call() throws Exception {
-        var r1 = new Rectangle(this.r1);
-        var r2 = new Rectangle(this.r2);
-        validateInput(r1, r2);
+        var rectangleOne = new Rectangle(this.r1);
+        var rectangleTwo = new Rectangle(this.r2);
+        validateInput(rectangleOne, rectangleTwo);
 
-        var rComp = new RectangleComparator(r1, r2);
-        var figureComparatorHandler = new NoCollisionRectangleHandler();
-        figureComparatorHandler.andThen(new SameRectangleHandler())
-                .andThen(new AdjacentRectangleHandler())
-                .andThen(new ContainedRectangleHandler())
-                .andThen(new IntersectedRectangleHandler());
-        figureComparatorHandler.handleRequest(rComp);
+        var rComp = new RectangleComparator(rectangleOne, rectangleTwo);
+        comparator.handleRequest(rComp);
 
         log.info("Intersection points: " + rComp.getIntersectionPoints());
         log.info("Contained: " + rComp.getIsContained());
